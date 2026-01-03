@@ -1,20 +1,20 @@
-import { createFileRoute, Link, redirect } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { GalleryVerticalEnd } from 'lucide-react'
 import { LoginForm } from '@/components/login-form'
-import { authClient } from '@/utils/auth-client'
+// import { authClient } from '@/utils/auth-client'
 
 export const Route = createFileRoute('/login')({
-  beforeLoad: async ({ location }) => {
-    const session = await authClient.getSession()
-    if (session.data) {
-      throw redirect({
-        to: '/dashboard',
-        search: {
-          redirect: location.href,
-        },
-      })
-    }
-  },
+  // beforeLoad: async ({ location }) => {
+  //   const session = await authClient.getSession()
+  //   if (session.data) {
+  //     throw redirect({
+  //       to: '/dashboard',
+  //       search: {
+  //         redirect: location.href,
+  //       },
+  //     })
+  //   }
+  // },
   component: RouteComponent,
 })
 

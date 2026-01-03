@@ -17,7 +17,7 @@ export const Route = createFileRoute('/_layout')({
     return { user }
   },
   loader: async ({ context, location }) => {
-    if (!context.user) {
+    if (!context) {
       throw redirect({ to: '/login', search: location.href })
     }
     return { user: context.user }

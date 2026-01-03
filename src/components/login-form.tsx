@@ -32,9 +32,7 @@ export function LoginForm({
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
-          <CardDescription>
-            Login with your Apple or Google account
-          </CardDescription>
+          <CardDescription>Login with Google account</CardDescription>
         </CardHeader>
         <CardContent>
           <form>

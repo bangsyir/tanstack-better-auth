@@ -1,11 +1,13 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { adminMiddleware } from '@/middleware/auth'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/admin')({
-  server: {
-    middleware: [adminMiddleware],
-  },
+export const Route = createFileRoute('/_layout/admin')({
   component: RouteComponent,
+  beforeLoad: async ({ context, location }) => {
+    const user = await context.user
+    if (user.role !== 'admin') {
+      throw redirect({ to: '/dashboard', search: location.href })
+    }
+  },
 })
 
 function RouteComponent() {

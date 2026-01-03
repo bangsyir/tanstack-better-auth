@@ -1,5 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { signOut, useSession } from '@/utils/auth-client'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import {
+  GalleryVerticalEnd,
   Route as RouteIcon,
   Server,
   Shield,
@@ -8,7 +11,9 @@ import {
   Zap,
 } from 'lucide-react'
 
-export const Route = createFileRoute('/')({ component: App })
+export const Route = createFileRoute('/')({
+  component: App,
+})
 
 function App() {
   const features = [
@@ -49,9 +54,58 @@ function App() {
         'Built from the ground up for modern web applications. Deploy anywhere JavaScript runs.',
     },
   ]
+  const navigate = useNavigate()
+  const { data: session, isPending } = useSession()
+  const handleLogout = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          navigate({ to: '/login' })
+        },
+      },
+    })
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
+      <div className="container flex justify-between items-center mx-auto px-4 py-2">
+        <Link
+          to="/"
+          className="flex items-center gap-2 self-center font-medium"
+        >
+          <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+            <GalleryVerticalEnd className="size-4" />
+          </div>
+        </Link>
+        <div className="flex items-center gap-2">
+          {isPending ? (
+            <div className="text-white">Loading...</div>
+          ) : session ? (
+            <>
+              <div className="text-white">{session.user.name}</div>
+              <Link
+                to="/dashboard"
+                className={buttonVariants({ size: 'sm', variant: 'outline' })}
+              >
+                dashboard
+              </Link>
+              <Button variant={'outline'} size={'sm'} onClick={handleLogout}>
+                logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className={buttonVariants({ size: 'sm', variant: 'outline' })}
+              >
+                login
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
+
       <section className="relative py-20 px-6 text-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10"></div>
         <div className="relative max-w-5xl mx-auto">

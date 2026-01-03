@@ -22,5 +22,8 @@ export const auth = betterAuth({
     },
   },
   plugins: [tanstackStartCookies(), admin()],
-  trustedOrigins: ['http://localhost:3000'],
+  trustedOrigins: [
+    'http://localhost:3000',
+    'http://bashir-tanstack.vercel.app',
+  ],
 })

@@ -9,17 +9,14 @@ export const authMiddleware = createMiddleware().server(async ({ next }) => {
   if (!session) {
     throw redirect({ to: '/login' })
   }
-  return await next()
-})
-
-export const adminMiddleware = createMiddleware().server(async ({ next }) => {
-  const headers = getRequestHeaders()
-  const session = await auth.api.getSession({ headers })
-  if (!session) {
-    throw redirect({ to: '/login' })
-  }
-  if (session.user.role !== 'admin') {
-    throw redirect({ to: '/dashboard' })
-  }
-  return await next()
+  return await next({
+    context: {
+      user: {
+        id: session.user.id,
+        name: session.user.name,
+        image: session.user.image,
+        role: session.user.role,
+      },
+    },
+  })
 })
